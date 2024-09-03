@@ -86,3 +86,32 @@ class Calculator(tk.Tk):
 if __name__ == "__main__":
     app = Calculator()
     app.mainloop()
+
+
+    ///////////////////////////////
+
+
+    import tkinter as tk
+from tkinter import messagebox
+
+class Calculadora(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Calculadora")
+        self.geometry("300x400")
+
+        self.display = Display(self)
+        self.ultimo_resultado = None
+        self.criar_widget()
+
+
+    def criar_widgets(self):
+        botao = [
+            ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3) #('aparece no botao', n° da linha, n° da coluna)
+            ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3)
+        ]
+
+
+
+
+
