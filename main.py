@@ -43,11 +43,11 @@ class Calculadora(tk.Tk):
 
         for (text, row, col, colspan) in botao:
             if text == '=':
-                bta = Button(self, text, command=self.calculate)
+                bta = Botao(self, text, command=self.calculate)
             elif text == 'C':
-                bta = Button(self, text, command=self.clear)
+                bta = Botao(self, text, command=self.clear)
             else:
-                bta = Button(self, text, command=lambda t=text: self.clicar_botao(t))
+                bta = Botao(self, text, command=lambda t=text: self.clicar_botao(t))
             bta.grid(row=row, column=col, columnspan=colspan)
             
         self.grid_rowconfigure(0, weight=1)
@@ -81,7 +81,7 @@ def calcular(self):
             messagebox.showerror("Erro", f"Operação inválida: {e}")
             self.tela.set_text("")
 
-    def clear(self):
+def clear(self):
         self.tela.set_text("")
 
 if __name__ == "__main__":
