@@ -1,25 +1,21 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class Tela(tk.Entry): # Um campo de text para o usuário digitar algo
+class Tela(tk.Entry):
     def __init__(self, parent):
         super().__init__(parent, borderwidth=2, relief="ridge", font=("Arial", 18), justify="right")
-        self.grid(row=0, column=0, columnspan=4) # columnspan: permite que um widget ocupe várias colunas.
-        self.text = ""
-        
-        def define_text(self, text):
-            self.text = text
-            self.deleta(0, tk.END)
-            self.insere(0, text)
+        self.grid(row=0, column=0, columnspan=4)
+
+    def define_text(self, text):
+        self.delete(0, tk.END)
+        self.insert(0, text)
 
     def obter_text(self):
         return self.get()
-        
-class Botao(tk.Botao):
-    def __init__(self, parent, text):
-        super().__init__(parent, text=text, font=("Arial", 14))
 
-        
+class Botao(tk.Button):
+    def __init__(self, parent, text, command=None):
+        super().__init__(parent, text=text, font=("Arial", 14), command=command)
 
 class Calculadora(tk.Tk):
     def __init__(self):
@@ -29,21 +25,20 @@ class Calculadora(tk.Tk):
 
         self.tela = Tela(self)
         self.ultimo_resultado = None
-        self.criar_widget()
-
+        self.criar_widgets()
 
     def criar_widgets(self):
-        botao = [
-            ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3), #('aparece no botao', n° da linha, n° da coluna)
+        botoes = [
+            ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
             ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3),
             ('1', 3, 0), ('2', 3, 1), ('3', 3, 2), ('-', 3, 3),
             ('0', 4, 0), ('.', 4, 1), ('=', 4, 2), ('+', 4, 3),
             ('C', 5, 0)
         ]
 
-        for (text, row, col, colspan) in botao:
+        for (text, row, col, colspan) in botoes:
             if text == '=':
-                bta = Botao(self, text, command=self.calculate)
+                bta = Botao(self, text, command=self.calcular)
             elif text == 'C':
                 bta = Botao(self, text, command=self.clear)
             else:
@@ -55,34 +50,34 @@ class Calculadora(tk.Tk):
             self.grid_rowconfigure(i, weight=1)
         for i in range(4):
             self.grid_columnconfigure(i, weight=1)
-            
+
     def clicar_botao(self, char):
-        current_text = self.tela.get_text()
+        current_text = self.tela.obter_text()
         if char.isdigit() or char == '.':
-            self.tela.set_text(current_text + char)
+            self.tela.define_text(current_text + char)
         elif char in '+-*/':
             if current_text and current_text[-1] not in '+-*/':
-                self.tela.set_text(current_text + char)
+                self.tela.define_text(current_text + char)
         elif char == '=':
-            self.calculate()
+            self.calcular()
         elif char == 'C':
-            self.clear()        
+            self.clear()
 
-def calcular(self):
+    def calcular(self):
         try:
-            expression = self.tela.get_text()
+            expression = self.tela.obter_text()
             result = eval(expression)
-            self.tela.set_text(str(result))
-            self.last_result = result
+            self.tela.define_text(str(result))
+            self.ultimo_resultado = result
         except ZeroDivisionError:
-            messagebox.showerror("Divisão por zero não é permitida.")
-            self.tela.set_text("")
+            messagebox.showerror("Erro", "Divisão por zero não é permitida.")
+            self.tela.define_text("")
         except Exception as e:
             messagebox.showerror("Erro", f"Operação inválida: {e}")
-            self.tela.set_text("")
+            self.tela.define_text("")
 
-def clear(self):
-        self.tela.set_text("")
+    def clear(self):
+        self.tela.define_text("")
 
 if __name__ == "__main__":
     app = Calculadora()
