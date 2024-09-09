@@ -1,117 +1,65 @@
-# calculadoraGUIOO]
+# Documentação da Calculadora GUI OO
 
-import tkinter as tk
-from tkinter import messagebox
+## Descrição
+Esta é uma calculadora básica implementada em Python usando a biblioteca Tkinter para a interface gráfica. Ela suporta operações simples, como adição, subtração, multiplicação e divisão.
 
-class Display(tk.Entry):
-    def __init__(self, parent):
-        super().__init__(parent, borderwidth=2, relief="ridge", font=("Arial", 18), justify="right")
-        self.grid(row=0, column=0, columnspan=4, sticky="nsew")
-        self.text = ""
+## Funcionalidades
+- Realiza operações matemáticas básicas: adição, subtração, multiplicação e divisão.
+- Exibe o resultado das operações na mesma tela.
+- Permite a entrada de números e operadores matemáticos através de uma interface gráfica.
 
-    def set_text(self, text):
-        self.text = text
-        self.delete(0, tk.END)
-        self.insert(0, text)
+## Requisitos
+- Python 3.x
+- Biblioteca Tkinter (inclusa na instalação padrão do Python)
 
-    def get_text(self):
-        return self.get()
+## Instalação
 
-class Button(tk.Button):
-    def __init__(self, parent, text, command=None):
-        super().__init__(parent, text=text, font=("Arial", 14), command=command)
+### Passo 1: Instalar Python
+Certifique-se de que o Python 3.x está instalado em seu sistema. Você pode baixá-lo [aqui](https://www.python.org/downloads/).
 
-class Calculator(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Calculadora")
-        self.geometry("300x400")
+### Passo 2: Verificar Tkinter
+Tkinter é uma biblioteca padrão do Python e deve estar incluída na sua instalação do Python. Para verificar se Tkinter está instalado, você pode executar o seguinte comando no terminal ou prompt de comando:
+```bash
+python -m tkinter
+```
+Se uma janela Tkinter aparecer, a biblioteca está instalada corretamente.
 
-        self.display = Display(self)
-        self.last_result = None
-        self.create_widgets()
+### Passo 3: Obter o Código
+Clone o repositório ou baixe o arquivo contendo o código da calculadora.
 
-    def create_widgets(self):
-        buttons = [
-            ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
-            ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3),
-            ('1', 3, 0), ('2', 3, 1), ('3', 3, 2), ('-', 3, 3),
-            ('0', 4, 0), ('.', 4, 1), ('=', 4, 2), ('+', 4, 3),
-            ('C', 5, 0, 4)
-        ]
+Se estiver usando Git, execute:
+```bash
+git clone https://github.com/seuusuario/seurepositorio.git
+```
+Substitua o link pelo repositório onde o código está armazenado.
 
-        for (text, row, col, colspan) in buttons:
-            if text == '=':
-                btn = Button(self, text, command=self.calculate)
-            elif text == 'C':
-                btn = Button(self, text, command=self.clear)
-            else:
-                btn = Button(self, text, command=lambda t=text: self.on_button_click(t))
-            btn.grid(row=row, column=col, columnspan=colspan, sticky="nsew")
+## Como Usar
 
-        self.grid_rowconfigure(0, weight=1)
-        for i in range(1, 6):
-            self.grid_rowconfigure(i, weight=1)
-        for i in range(4):
-            self.grid_columnconfigure(i, weight=1)
+### Executar o Programa
 
-    def on_button_click(self, char):
-        current_text = self.display.get_text()
-        if char.isdigit() or char == '.':
-            self.display.set_text(current_text + char)
-        elif char in '+-*/':
-            if current_text and current_text[-1] not in '+-*/':
-                self.display.set_text(current_text + char)
-        elif char == '=':
-            self.calculate()
-        elif char == 'C':
-            self.clear()
+1. Vá até o diretório onde o arquivo Python (`calculadora.py`, por exemplo) está localizado.
 
-    def calculate(self):
-        try:
-            expression = self.display.get_text()
-            result = eval(expression)
-            self.display.set_text(str(result))
-            self.last_result = result
-        except ZeroDivisionError:
-            messagebox.showerror("Erro", "Divisão por zero não é permitida.")
-            self.display.set_text("")
-        except Exception as e:
-            messagebox.showerror("Erro", f"Operação inválida: {e}")
-            self.display.set_text("")
+2. Execute o programa com o seguinte comando:
+   ```bash
+   python calculadora.py
+   ```
+   Isso abrirá uma janela com a interface gráfica da calculadora.
 
-    def clear(self):
-        self.display.set_text("")
+### Interface e Funcionalidade
 
-if __name__ == "__main__":
-    app = Calculator()
-    app.mainloop()
+- **Tela de Entrada**: Exibe os números e operações atuais. Use o teclado ou clique nos botões para inserir valores e operadores.
+  
+- **Botões**:
+  - **Números (0-9)**: Insere o número correspondente na tela.
+  - **Operadores (+, -, *, /)**: Adiciona o operador selecionado à expressão.
+  - **.**: Adiciona um ponto decimal.
+  - **C**: Limpa a tela.
+  - **=**: Avalia a expressão matemática e exibe o resultado.
 
+### Exemplo de Uso
+1. Clique nos botões para inserir uma expressão matemática, por exemplo: `5`, `+`, `3`, `*`, `2`.
+2. Clique no botão `=` para calcular o resultado, que será exibido na tela.
+3. Se desejar limpar a tela, clique no botão `C`.
 
-    ///////////////////////////////
-
-
-    import tkinter as tk
-from tkinter import messagebox
-
-class Calculadora(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Calculadora")
-        self.geometry("300x400")
-
-        self.display = Display(self)
-        self.ultimo_resultado = None
-        self.criar_widget()
-
-
-    def criar_widgets(self):
-        botao = [
-            ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3) #('aparece no botao', n° da linha, n° da coluna)
-            ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3)
-        ]
-
-
-
-
-
+## Personalização
+- **Personalização**: A interface e funcionalidades podem ser ampliadas para incluir mais recursos, como suporte a operações avançadas ou histórico de cálculos.
